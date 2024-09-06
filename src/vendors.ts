@@ -1,8 +1,23 @@
 import config from "./config.json"
 
-function GetCountryName(ipADdress: string){
-    var limit = config.vendors["first_vendor"].rateLimit;
+interface VendorConfig {
+  rateLimit: number;
+}
+
+interface Config {
+  vendors: {
+    [key: string]: VendorConfig;
+  };
+  defaultVendor: string;
+}
+
+const typedConfig: Config = config;
+
+
+function getCountryName(ipADdress: string){
+    const defaultVendor: string = typedConfig.defaultVendor;
+    const limit = typedConfig.vendors[defaultVendor].rateLimit;
     return "";
 }
 
-export default GetCountryName;
+export default getCountryName;

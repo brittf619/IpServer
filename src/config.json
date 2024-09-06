@@ -1,10 +1,11 @@
 {
     "vendors": {
-      "first_vendor": {
+      "ipstack": {
         "rateLimit": 1000
       },
-      "secone_vendor": {
+      "second_vendor": {
         "rateLimit": 500
       }
-    }
+    },
+    "defaultVendor": "ipstack"
 }

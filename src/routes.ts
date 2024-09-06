@@ -1,7 +1,6 @@
-
 import  {Router, Request, Response} from 'express';
 import logger from "./logger"
-import GetCountryName from "./vendors";
+import getCountryName from "./vendors";
 
 interface IpRequestBody {
     ipAddress: string;
@@ -12,28 +11,26 @@ interface IpCache {
 }
 const cache: IpCache = {};
   
-const router = Router()
+const router = Router();
 
 
 router.get("/ip-location", (req: Request<{}, {}, IpRequestBody>, res: Response) => {
+    var countryName: string = "";
+
     const { ipAddress} = req.body;
-    var countryName: string = ""
     if (!ipAddress) {
         return res.status(400).json({error: "IP address is required for translation!"})
     }
-
-    logger.debug("recieved ip: ", ipAddress)
+    logger.debug("recieved ip: ", ipAddress);
 
 
     if (ipAddress in cache) { 
         countryName = cache[ipAddress];
     } else {
-        countryName = GetCountryName(ipAddress);
+        countryName = getCountryName(ipAddress);
 
-        /* add to cache */
         logger.debug(`adding ${ipAddress}:${countryName} to cache`)
         cache[ipAddress] = countryName;
-
     }
 
     res.send(countryName);
