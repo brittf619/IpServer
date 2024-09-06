@@ -1,9 +1,9 @@
-import express, {Request, Response} from 'express';
+import express from 'express';
 import logger from "./logger"
 import router from "./routes"
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 1234;
 
 app.use(express.json());
 app.use(router)

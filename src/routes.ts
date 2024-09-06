@@ -1,7 +1,7 @@
 
-import config from "./config.json"
 import  {Router, Request, Response} from 'express';
 import logger from "./logger"
+import GetCountryName from "./vendors";
 
 interface IpRequestBody {
     ipAddress: string;
@@ -17,32 +17,26 @@ const router = Router()
 
 router.get("/ip-location", (req: Request<{}, {}, IpRequestBody>, res: Response) => {
     const { ipAddress} = req.body;
-    var country: string = ""
+    var countryName: string = ""
     if (!ipAddress) {
         return res.status(400).json({error: "IP address is required for translation!"})
     }
 
     logger.debug("recieved ip: ", ipAddress)
 
-    var limit = config.vendors["first_vendor"].rateLimit;
 
-    /* check if is in cache */
     if (ipAddress in cache) { 
-        country = cache[ipAddress];
+        countryName = cache[ipAddress];
     } else {
-        /* access vendor randomly */
-
-        /* if we hit the rate limit - set only aaccessing other vendor */
-
-
+        countryName = GetCountryName(ipAddress);
 
         /* add to cache */
-        logger.debug(`adding ${ipAddress}:${country} to cache`)
-        cache[ipAddress] = country;
+        logger.debug(`adding ${ipAddress}:${countryName} to cache`)
+        cache[ipAddress] = countryName;
 
     }
 
-    res.send(country);
+    res.send(countryName);
 })
 
 export default router;
