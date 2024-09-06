@@ -1,0 +1,10 @@
+{
+    "vendors": {
+      "first_vendor": {
+        "rateLimit": 1000
+      },
+      "secone_vendor": {
+        "rateLimit": 500
+      }
+    }
+}
