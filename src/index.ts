@@ -14,8 +14,16 @@ app.get("/", (req, res) => {
     res.send("Hi!")
 })
 
+/* Our naive cache. for the assignment scope this in enough */
+interface IpCache {
+    [ipAddress: string]: string;
+}
+  
+const cache: IpCache = {};
+
 app.get("/ip-location", (req: Request<{}, {}, IpRequestBody>, res: Response) => {
     const { ipAddress} = req.body;
+    var country: string = ""
     if (!ipAddress) {
         return res.status(400).json({error: "IP address is required for translation!"})
     }
@@ -23,17 +31,21 @@ app.get("/ip-location", (req: Request<{}, {}, IpRequestBody>, res: Response) => 
     var limit = config.vendors["first_vendor"].rateLimit;
 
     /* check if is in cache */
+    if (ipAddress in cache) { 
+        country = cache[ipAddress];
+    } else {
+        /* access vendor randomly */
 
-    /* access vendor randomly */
-
-    /* if we hit the rate limit - set only aaccessing other vendor */
+        /* if we hit the rate limit - set only aaccessing other vendor */
 
 
-    console.log("recieved ip: ", ipAddress)
+        console.log("recieved ip: ", ipAddress)
 
-    /* add to cache */
+        /* add to cache */
 
-    res.send("Italy!")
+    }
+
+    res.send(country);
 })
 
 app.listen(port, () => {
