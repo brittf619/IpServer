@@ -1,6 +1,6 @@
 import  {Router, Request, Response} from 'express';
 import logger from "./logger"
-import getCountryName from "./vendors";
+import getCountryName from "./ip-vendors";
 
 interface IpRequestBody {
     ipAddress: string;
