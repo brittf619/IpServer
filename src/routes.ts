@@ -1,6 +1,6 @@
 import  {Router, Request, Response} from 'express';
 import logger from "./logger"
-import getCountryName from "./ip-vendors";
+import {getCountryName}  from "./ip-vendors/index";
 
 interface IpRequestBody {
     ipAddress: string;
@@ -14,8 +14,8 @@ const cache: IpCache = {};
 const router = Router();
 
 
-router.get("/ip-location", (req: Request<{}, {}, IpRequestBody>, res: Response) => {
-    var countryName: string = "";
+router.get("/ip-location", async (req: Request<{}, {}, IpRequestBody>, res: Response) => {
+    var countryName: string | null = "";
 
     const { ipAddress} = req.body;
     if (!ipAddress) {
@@ -27,10 +27,16 @@ router.get("/ip-location", (req: Request<{}, {}, IpRequestBody>, res: Response) 
     if (ipAddress in cache) { 
         countryName = cache[ipAddress];
     } else {
-        countryName = getCountryName(ipAddress);
+        try { 
+            countryName = await getCountryName(ipAddress);
 
-        logger.debug(`adding ${ipAddress}:${countryName} to cache`)
-        cache[ipAddress] = countryName;
+            if (countryName != null){
+                logger.debug(`adding ${ipAddress}:${countryName} to cache`)
+                cache[ipAddress] = countryName;
+            } 
+        } catch (error) {
+            res.status(500).json({error: `Problem with getting country name`})
+        }
     }
 
     res.send(countryName);

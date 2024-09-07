@@ -1,5 +1,6 @@
 import config from "../config.json"
 import logger from "../logger"
+import { ipStackGetCountryName } from "./ipstack";
 
 interface VendorConfig {
   rateLimit: number;
@@ -9,45 +10,41 @@ interface Config {
   vendors: {
     [key: string]: VendorConfig;
   };
-  defaultVendor: string;
+  vendorsOrder: string[];
 }
 
 const typedConfig: Config = config;
 
-const validVendors: string[] = ["ipstack", "callme"];
 
-function isValidVendor(vendor: string): boolean {
-    if (!validVendors.includes(vendor)){
-        return false;
+export async function getCountryName(ipADdress: string): Promise<string | null>{
+    const vendors = typedConfig.vendorsOrder;
+
+    for (let vendor in vendors) {
+        const maxReqPerHour: number = typedConfig.vendors[vendor].rateLimit;
+
+        if (isInLimit(vendor, maxReqPerHour)){
+            return await useVendor(vendor, ipADdress);
+        } else {
+            logger.warn(`vendor ${vendor} has exceeded rate limit. moving on to next`)
+        }
+
     }
-    return vendor in typedConfig.vendors;
-};
-  
-function getDefaultVendor(): string{
-    let defaultVendor: string = typedConfig.defaultVendor;
-    if (!isValidVendor(defaultVendor)) {
-        /* TODO - check this in a test */
-        logger.error(`Invalid default vendor: ${defaultVendor}. Using fallback.`);
-        defaultVendor = Object.keys(typedConfig.vendors)[0];
-    }
-
-    return defaultVendor;
-};
-
-function getCountryName(ipADdress: string): string{
-    const defaultVendor: string = getDefaultVendor();
-    const limit: number = typedConfig.vendors[defaultVendor].rateLimit;
-    let countryName: string = "";
-
-    if (defaultVendor == "ipstack") {
-        const s = "";
-    } else if (defaultVendor == "callme") {
-        const d = "";
-    } else {
-        /* TODO: what to do here? */
-        logger.error("error")
-    }
-    return countryName;
+    throw new Error("all vendors exceeded rate limit")
 }
 
-export default getCountryName;
+
+function isInLimit(vendor: string, maxReqPerHour: number): boolean {
+
+    return true;
+}
+
+async function useVendor(vendor: string, ipAddress: string): Promise<string | null> {
+    if (vendor === 'ipstack') {
+        return await ipStackGetCountryName(ipAddress);
+      } else if (vendor === 'second_vendor') {
+        /* TODO: change this to other vendor */
+        return await ipStackGetCountryName(ipAddress);
+      } else {
+        throw new Error(`Vendor ${vendor} is not supported.`);
+      }
+}

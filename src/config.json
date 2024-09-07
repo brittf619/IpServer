@@ -3,9 +3,9 @@
       "ipstack": {
         "rateLimit": 1000
       },
-      "second_vendor": {
+      "ipInfo": {
         "rateLimit": 500
       }
     },
-    "defaultVendor": "ipstack"
+    "vendorsOrder": ["ipstack", "ipInfo"]
 }

@@ -5,11 +5,7 @@ import logger from "../logger"
 const API_KEY: string = ""
 const ipStackUrl = "http://api.ipstack.com"
 
-async function ipStackGetCountryName(ipAddress: string): Promise<string | null>{
-
-    /* check rate limit first */
-
-    /* otherwise call api */
+export async function ipStackGetCountryName(ipAddress: string): Promise<string | null>{
     try {
         const response = await axios.get(`${ipStackUrl}/${ipAddress}?access_key=${API_KEY}`)
         const data = response.data
