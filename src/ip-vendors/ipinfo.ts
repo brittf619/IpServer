@@ -2,7 +2,7 @@ import IPinfoWrapper from "node-ipinfo";
 import logger from "../logger";
 
 /* TODO: get this from env var */
-const IPINFO_API_KEY = '';
+const IPINFO_API_KEY = "7b8e72f2780c5e";
 
 const ipinfoWrapper = new IPinfoWrapper(IPINFO_API_KEY);
 

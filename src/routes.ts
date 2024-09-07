@@ -21,7 +21,7 @@ router.get("/ip-location", async (req: Request<{}, {}, IpRequestBody>, res: Resp
     if (!ipAddress) {
         return res.status(400).json({error: "IP address is required for translation!"})
     }
-    logger.debug("recieved ip: ", ipAddress);
+    logger.info("recieved ip: ", ipAddress);
 
 
     if (ipAddress in cache) { 
