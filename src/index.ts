@@ -2,7 +2,7 @@ import express from 'express';
 import logger from "./logger"
 import router from "./routes"
 
-const app = express();
+export const app = express();
 const port = process.env.PORT || 1234;
 
 app.use(express.json());
