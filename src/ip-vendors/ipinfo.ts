@@ -1,9 +1,10 @@
 import IPinfoWrapper from "node-ipinfo";
 import logger from "../logger";
 
-const IPINFO_API_KEY = "7b8e72f2780c5e";
 
-const ipinfoWrapper = new IPinfoWrapper(IPINFO_API_KEY);
+const ipinfoToken = process.env.IPINFO_API_TOKEN || "";
+
+const ipinfoWrapper = new IPinfoWrapper(ipinfoToken);
 
 export async function ipInfoGetCountryName(ipAddress: string): Promise<string | null> {
     try {

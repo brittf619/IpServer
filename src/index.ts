@@ -1,6 +1,10 @@
 import express from 'express';
 import logger from "./logger"
 import router from "./routes"
+import dotenv from 'dotenv';
+
+/* load the api tokens */
+dotenv.config();
 
 export const app = express();
 const port = process.env.PORT || 1234;
