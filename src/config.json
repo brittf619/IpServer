@@ -3,9 +3,9 @@
       "ipstack": {
         "rateLimit": 1000
       },
-      "ipInfo": {
+      "ipinfo": {
         "rateLimit": 500
       }
     },
-    "vendorsOrder": ["ipInfo", "ipstack"]
+    "vendorsOrder": ["ipinfo", "ipstack"]
 }

@@ -7,16 +7,15 @@ Ip to Country server assignment
 
 ```
 npm install --dev
-
-# for ipstack you need to set your api-key as an env var
-env IPSTACK_API_KEY=""
-
-# then you can run the server
 npm run server
 ``` 
+
+# Run the tests
+```
+npm install --dev
+npm run test
+```
 
 # ToDo 
 1. e2e tests
 2. check installation in new folder
-3. get apikey from env var
-4. add apikeys to readme

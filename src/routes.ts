@@ -21,11 +21,12 @@ router.get("/ip-location", async (req: Request<{}, {}, IpRequestBody>, res: Resp
     if (!ipAddress) {
         return res.status(400).json({error: "IP address is required for translation!"})
     }
-    logger.info("recieved ip: ", ipAddress);
+    logger.info(`recieved ip: ${ipAddress}`)
 
 
     if (ipAddress in cache) { 
         countryName = cache[ipAddress];
+        logger.info(`got country name ${countryName} from cache for ip ${ipAddress}!`)
     } else {
         try { 
             countryName = await getCountryName(ipAddress);
@@ -35,7 +36,7 @@ router.get("/ip-location", async (req: Request<{}, {}, IpRequestBody>, res: Resp
                 cache[ipAddress] = countryName;
             } 
         } catch (error) {
-            res.status(500).json({error: `Problem with getting country name`})
+            res.status(500).json({error: `Problem with getting country name: ${error}`})
         }
     }
 

@@ -6,12 +6,14 @@ const endpoint: string = "/ip-location"
 
 describe('GET /ip-location', function() {
     it('should return country for valid IP', async function() {
+        const ipRequestBody = {ipAddress: "134.201.250.155"}
         const res = await request(app)
             .get(endpoint)
-            .query({ ipAddress: '134.201.250.155' });  // Example IP
+            .send(ipRequestBody)
+            .set('Accept', "application/json")
         console.log(res.text)
         assert.strictEqual(res.status, 200)
-        assert.ok(res.body.hasOwnProperty('country'));
+        assert.equal(res.text, "United States")
     });
 
     it('should return error for missing IP', async function() {
