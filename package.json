@@ -18,7 +18,7 @@
   },
   "scripts": {
     "server": "npx ts-node src/index.ts",
-    "test": "npx tsc; npx mocha 'dist/test/**/*.js'",
+    "test": "npx tsc; npx mocha --exit dist/test/**/*.js",
     "clean": "rm -rf dist/"
   }
 }
