@@ -5,7 +5,6 @@ Ip to Country server assignment
 
 # Run the server 
 
-// TODO - add sample api-keys 
 ```
 npm install --dev
 
@@ -20,3 +19,4 @@ npm run server
 1. e2e tests
 2. check installation in new folder
 3. get apikey from env var
+4. add apikeys to readme
