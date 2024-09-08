@@ -1,16 +1,15 @@
 import axios from "axios"
 import logger from "../logger"
 
-// TODO: move this to env var
-const API_KEY: string = ""
 const ipStackUrl = "http://api.ipstack.com"
 
 export async function ipStackGetCountryName(ipAddress: string): Promise<string | null>{
     try {
-        const response = await axios.get(`${ipStackUrl}/${ipAddress}?access_key=${API_KEY}`)
+        const api_key: string = process.env.IPSTACK_API_KEY || "";
+        const response = await axios.get(`${ipStackUrl}/${ipAddress}?access_key=${api_key}`)
         const data = response.data
-        if (data && data.countryName) {
-            return data.countryName;
+        if (data && data["country_name"]) {
+            return data["country_name"];
         } else {
             return null;
         }
