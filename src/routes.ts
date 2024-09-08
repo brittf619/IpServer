@@ -1,17 +1,14 @@
 import  {Router, Request, Response} from 'express';
 import logger from "./logger"
 import {getCountryName}  from "./ip-vendors/index";
+import { Cache } from './cache';
 
 interface IpRequestBody {
     ipAddress: string;
 }
-/* Our naive cache. for the assignment scope this in enough */
-interface IpCache {
-    [ipAddress: string]: string;
-}
-const cache: IpCache = {};
   
 const router = Router();
+const cache = new Cache();
 
 
 router.get("/ip-location", async (req: Request<{}, {}, IpRequestBody>, res: Response) => {
@@ -23,7 +20,7 @@ router.get("/ip-location", async (req: Request<{}, {}, IpRequestBody>, res: Resp
     }
     logger.info(`recieved ip: ${ipAddress}`)
 
-    countryName = getFromCache(cache, ipAddress);
+    countryName = cache.getFromCache(ipAddress);
 
 
     if (!countryName){
@@ -32,8 +29,10 @@ router.get("/ip-location", async (req: Request<{}, {}, IpRequestBody>, res: Resp
 
             if (countryName != null){
                 logger.debug(`adding ${ipAddress}:${countryName} to cache`)
-                cache[ipAddress] = countryName;
-            } 
+                cache.insertCache(ipAddress, countryName);
+            } else {
+                res.status(404).json({error: "Country name not found!"})
+            }
         } catch (error) {
             res.status(500).json({error: `Problem with getting country name: ${error}`})
         }
@@ -42,13 +41,5 @@ router.get("/ip-location", async (req: Request<{}, {}, IpRequestBody>, res: Resp
     res.send(countryName);
 })
 
-function getFromCache(cache: IpCache, key: string): string | null {
-    if (key in cache) {
-        const countryName = cache[key];
-        logger.info(`Got ${countryName} for key: ${key}`);
-        return countryName;
-    }
-    return null;
-}
 
 export default router;
