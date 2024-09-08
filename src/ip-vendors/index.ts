@@ -16,7 +16,7 @@ interface Config {
 
 const typedConfig: Config = config;
 
-interface VendorRate {
+export interface VendorRate {
     counter: number;
     resetTime: number; 
 }
@@ -48,7 +48,7 @@ export async function getCountryName(ipADdress: string): Promise<string | null>{
     throw new Error("all vendors exceeded rate limit")
 }
 
-function isInLimit(vendor: string, maxReqPerHour: number, currentVendorLimits: {[vendor: string]: VendorRate} ): boolean {
+export function isInLimit(vendor: string, maxReqPerHour: number, currentVendorLimits: {[vendor: string]: VendorRate} ): boolean {
     const currentTime = Date.now();
     const vendorLimit = currentVendorLimits[vendor];
 

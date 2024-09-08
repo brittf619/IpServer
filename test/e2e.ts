@@ -38,10 +38,6 @@ describe('GET /ip-location with second vendor', function() {
     });
 });
 
-describe("invalid configuration", function() {
-        
-})
-
 describe("GET sanity check /", function() {
     it('calls /', async function() {
         const res = await request(app).get('/');
