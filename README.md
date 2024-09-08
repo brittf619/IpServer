@@ -16,6 +16,3 @@ npm run server
 npm install --dev
 npm run test
 ```
-
-# ToDo 
-2. check installation in new folder
