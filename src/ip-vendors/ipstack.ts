@@ -4,6 +4,7 @@ import logger from "../logger"
 const ipStackUrl = "http://api.ipstack.com"
 
 export async function ipStackGetCountryName(ipAddress: string): Promise<string | null>{
+    logger.info("using ipstack vendor!")
     try {
         const api_key: string = process.env.IPSTACK_API_KEY || "";
         const response = await axios.get(`${ipStackUrl}/${ipAddress}?access_key=${api_key}`)
