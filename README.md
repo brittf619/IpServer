@@ -18,5 +18,4 @@ npm run test
 ```
 
 # ToDo 
-1. e2e tests
 2. check installation in new folder

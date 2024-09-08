@@ -38,7 +38,7 @@ export async function getCountryName(ipADdress: string): Promise<string | null>{
     for (let vendor of vendors) {
         const maxReqPerHour: number = typedConfig.vendors[vendor].rateLimit;
 
-        if (isInLimit(vendor, maxReqPerHour)){
+        if (isInLimit(vendor, maxReqPerHour,  vendorLimits)){
             return await useVendor(vendor, ipADdress);
         } else {
             logger.warn(`vendor ${vendor} has exceeded rate limit. moving on to next`)
@@ -48,9 +48,9 @@ export async function getCountryName(ipADdress: string): Promise<string | null>{
     throw new Error("all vendors exceeded rate limit")
 }
 
-function isInLimit(vendor: string, maxReqPerHour: number): boolean {
+function isInLimit(vendor: string, maxReqPerHour: number, currentVendorLimits: {[vendor: string]: VendorRate} ): boolean {
     const currentTime = Date.now();
-    const vendorLimit = vendorLimits[vendor];
+    const vendorLimit = currentVendorLimits[vendor];
 
   if (currentTime > vendorLimit.resetTime) {
     vendorLimit.counter = 0;

@@ -23,11 +23,10 @@ router.get("/ip-location", async (req: Request<{}, {}, IpRequestBody>, res: Resp
     }
     logger.info(`recieved ip: ${ipAddress}`)
 
+    countryName = getFromCache(cache, ipAddress);
 
-    if (ipAddress in cache) { 
-        countryName = cache[ipAddress];
-        logger.info(`got country name ${countryName} from cache for ip ${ipAddress}!`)
-    } else {
+
+    if (!countryName){
         try { 
             countryName = await getCountryName(ipAddress);
 
@@ -42,5 +41,14 @@ router.get("/ip-location", async (req: Request<{}, {}, IpRequestBody>, res: Resp
 
     res.send(countryName);
 })
+
+function getFromCache(cache: IpCache, key: string): string | null {
+    if (key in cache) {
+        const countryName = cache[key];
+        logger.info(`Got ${countryName} for key: ${key}`);
+        return countryName;
+    }
+    return null;
+}
 
 export default router;
