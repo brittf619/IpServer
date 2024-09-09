@@ -1,0 +1,11 @@
+{
+    "vendors": {
+      "ipstack": {
+        "rateLimit": 1000
+      },
+      "ipinfo": {
+        "rateLimit": 500
+      }
+    },
+    "vendorsOrder": ["ipinfo", "ipstack"]
+}
